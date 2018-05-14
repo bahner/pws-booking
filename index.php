@@ -34,7 +34,6 @@ function pws_booking_init() {
 <h2>Last opp medlemsliste</h2>
 Filen hentes fra minidrett.no i Klubbadmin. Filen *må* inneholde feltene:
 <ul>
-  <li>PersonId</li>
   <li>Fornavn</li>
   <li>Etternavn</li>
   <li>Tlf. mobil</li>
