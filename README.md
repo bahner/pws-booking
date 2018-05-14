@@ -4,6 +4,7 @@ PWS Booking
 A wordpress plugin for updateing members in OPKs member database for booking at Vangen.
 
 Requirements:
+
   * Wordpress
   * PHP5.6 +
   * Python2.7
