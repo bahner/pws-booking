@@ -13,10 +13,6 @@ add_action('admin_menu', 'pws_booking_setup_menu');
 $WP_PLUGIN_DIR = plugin_dir_path( __FILE__ );
 $PARSER = "${WP_PLUGIN_DIR}parse_upload.py";
 
-# Where to find uploaded file
-$WP_UPLOADS =  wp_upload_dir();
-$WP_UPLOAD_PATH = $WP_UPLOADS['path'];
-
 function pws_booking_setup_menu() {
 
 /*
@@ -54,10 +50,8 @@ Vangen booking vil bruke <strong>mobilnummer</strong> som innlogging.
 }
 
 
-
 function pws_booking_handle_post(){
 
-  global $WP_UPLOAD_PATH;
   global $PARSER;
 
   // First check if the file appears on the _FILES array
