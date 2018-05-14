@@ -9,6 +9,14 @@ Version: 0.0.1
 
 add_action('admin_menu', 'pws_booking_setup_menu');
 
+# The parser to use
+$WP_PLUGIN_DIR = plugin_dir_path( __FILE__ );
+$PARSER = "${WP_PLUGIN_DIR}parse_upload.py";
+
+# Where to find uploaded file
+$WP_UPLOADS =  wp_upload_dir();
+$WP_UPLOAD_PATH = $WP_UPLOADS['path'];
+
 function pws_booking_setup_menu() {
 
 /*
@@ -48,24 +56,22 @@ Vangen booking vil bruke <strong>mobilnummer</strong> som innlogging.
 
 
 function pws_booking_handle_post(){
+
+  global $WP_UPLOAD_PATH;
+  global $PARSER;
+
   // First check if the file appears on the _FILES array
   if(isset($_FILES['pws_booking_medlemsliste'])){
-    $medlemsliste = $_FILES['pws_booking_medlemsliste'];
- 
-    // Use the wordpress function to upload pws_booking_medlemsliste
-    // corresponds to the position in the $_FILES array
-    // 0 means the content is not associated with any other posts
-    $uploaded=media_handle_upload('pws_booking_medlemsliste', 0);
+  
+    $uploaded=wp_handle_upload($_FILES['pws_booking_medlemsliste'], array('test_form' => FALSE));
+
     // Error checking using WP functions
     if(is_wp_error($uploaded)){
       echo "Feil ved opplasting: " . $uploaded->get_error_message();
     }else{
-      $my_count = $GLOBALS['wpdb']->get_var("select count(*) from opk_booking_user;");
-      echo "Opplasting lyktes! There are ", $my_count, " users";
+      $membersheet = $uploaded['file'];
+      echo exec("/usr/bin/python2.7 $PARSER $membersheet");
     }
-
-  
-
   }
 }
 ?>
