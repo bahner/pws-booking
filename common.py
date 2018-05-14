@@ -20,7 +20,7 @@ def xl_read_as_dict(spreadsheet):
     rows = sheet.max_row
     cols = sheet.max_column
 
-    # headers = dict((col, sheet.cell(row=1, column=col).value) for col in range(1, cols))
+    headers = dict((col, sheet.cell(row=1, column=col).value) for col in range(1, cols))
 
     def item(row, col):
         """Describe item key for column, ie. header."""
