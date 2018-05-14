@@ -21,11 +21,9 @@ function pws_booking_setup_menu() {
 
 */
 
-
  add_menu_page('Oppdater gammel medlemsdatabase for Vangen booking', 'PWS Booking', 'import', 'pws-booking', 'pws_booking_init');
 
 }
-
 
 function pws_booking_init() {
 
