@@ -12,14 +12,5 @@ ATTR_MAP = {
     'postaladdress': 'Postadresse',
     'postalcode': 'Postnr',
     'userid': 'Tlf. mobil',
-    'id': 'Tlf. mobil',
-}
-
-DEFAULT_EMAIL = 'mangler.epost@opk.no'
-
-DEFAULTS = {
-    'E-post': DEFAULT_EMAIL,
-    'Adresse': 'Konglebakken 1',
-    'Postnr': '1111',
-    'Postadresse': 'BORTENFOR SOL OG MÅNE',
+    'id': 'PersonId',
 }

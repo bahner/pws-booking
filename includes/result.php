@@ -1,4 +1,4 @@
-<h1>Database oppdatert med følgende data</h1>
+<h2>Medlemsoversikt</h2>
 <hr>
 <table>
     <?php

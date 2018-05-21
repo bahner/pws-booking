@@ -12,54 +12,67 @@ Version: 0.0.1
 */
 
 defined( 'ABSPATH' ) or die( 'Not properly invoked. Plugin now dies.' );
-add_action('admin_menu', 'pws_booking_setup_menu');
 
-# The parser to use
+# Some constants and possible config
 $WP_PLUGIN_DIR = plugin_dir_path( __FILE__ );
-$PARSER = "${WP_PLUGIN_DIR}parse_upload.py";
-$UPLOAD = "${WP_PLUGIN_DIR}upload_form.php";
-$RESULT = "${WP_PLUGIN_DIR}result.php";
-$COLUMNS = array(
-  'fullname',
-  'userid',
-  'status',
-  'phonemobile',
-  'email',
-);
-#  'address1',
-#  'postalcode',
-#  'postaladdress',
+require "${WP_PLUGIN_DIR}/includes/constants.php";
 
-function pws_booking_setup_menu() {
 
-/*
- Set role to "import" which is a bit misleading, but close enough for government work.
- All administrators will have this right.
+function pws_booking_admin_menu() {
 
-*/
+  /*
+   Set role to "import" which is a bit misleading, but close enough for government work.
+   All administrators will have this right.
+  */
 
- add_menu_page('Oppdater gammel medlemsdatabase for Vangen booking', 'PWS Booking', 'import', 'pws-booking', 'pws_booking_init');
+ add_menu_page('Vangen booking', 'PWS Booking', 'import', 'pws-booking', 'pws_booking_admin_menu_welcome');
+ add_submenu_page('pws-booking', 'Medlemsoversikt', 'Medlemsoversikt', 'import', 'pws-booking-medlemmer', 'pws_booking_admin_menu_users');
+ add_submenu_page('pws-booking', 'Vedlikehold', 'Vedlikehold', 'import', 'pws-booking', 'pws_booking_admin_menu_upload');
 
 }
 
-function pws_booking_init() {
+add_action('admin_menu', 'pws_booking_admin_menu');
+
+function pws_booking_admin_menu_welcome() {
+
+  global $WELCOME;
+  include $WELCOME;
+
+}
+
+function pws_booking_admin_menu_users() {
+
+  global $RESULT;
+  include $RESULT;
+
+  echo "Showing users!";
+
+}
+
+function pws_booking_admin_menu_upload() {
+
+  global $RESULT;
+  global $UPLOAD;
 
   if(isset($_FILES['pws_booking_medlemsliste'])) {
 
-    global $RESULT;
+    $members = pws_booking_handle_post();
 
-    pws_booking_deactivate_all_bookers();
-    $json = pws_booking_handle_post();
-    pws_booking_upsert_users($json);
+    if (sizeof($members) > 100) {
 
-    include $RESULT;
-  
-  } else {
-  
-    global $UPLOAD;
-    include $UPLOAD;
+      pws_booking_deactivate_all_bookers();
+      pws_booking_upsert_users($members);
 
+      include $RESULT;
+      return true;
+
+    } else {
+    
+      echo "DATABASE IKKE OPPDATERT. PUSSIG FÅ MEDLEMMER!";
+    }
   }
+  
+  include $UPLOAD;
 }
 
 
@@ -71,17 +84,15 @@ function pws_booking_handle_post(){
     the filename to a bundled python-script. Python is
     orders of magnitude better at handle Spreadsheets.
  
-    Data is returned and passed on as json, seeing as I
-    don't trust PHP data structures. This also makes it
-    easier to pass this to a REST API or such later.
-
     The python script used is Python 2.7 because this is
     the only version available to us in production at the
     time of writing. This is also the reason it's hardcoded.
 
+    Returns an array of associative arrays of users
+
   */
 
-  global $PARSER;
+  global $WP_PLUGIN_DIR;
 
   // First check if the file appears on the _FILES array
   // The key_value is defined in the the post form.
@@ -103,9 +114,11 @@ function pws_booking_handle_post(){
     }else{
 
       $membersheet = $uploaded['file'];
-      $json_data = exec("/usr/bin/python2.7 $PARSER $membersheet");
+      $parser = "${WP_PLUGIN_DIR}parse_upload.py";
 
-      return $json_data;
+      $json = exec("/usr/bin/python2.7 $parser $membersheet");
+
+      return json_decode($json, true); // Return a list of asoociative arrays of users.
 
     }
   }
@@ -132,7 +145,7 @@ function pws_booking_deactivate_all_bookers() {
 
 }
 
-function pws_booking_upsert_users($json_memberlist) {
+function pws_booking_upsert_users($members) {
 
   /*
     Receive a list users in JSON format. Convert this list to
@@ -152,18 +165,14 @@ function pws_booking_upsert_users($json_memberlist) {
     it is now possible to match the data 1-2-1 to the database
     structure.
 
-    However there is no "status" field, so we set them all as 'active'
-
   */
 
   global $wpdb;
 
-  $members = json_decode($json_memberlist, true); // Return a list of asoociative arrays of users.
+  //echo var_dump($members);
 
   foreach ($members as $member) {
 
-    $member['status'] = 'active'; // Add required active status
-  
     // Update existing users, or create new.
     // Ref. https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
     $wpdb->replace(
@@ -173,8 +182,9 @@ function pws_booking_upsert_users($json_memberlist) {
     $wpdb->replace(
       'opk_booking_user',
       array (
+        'id' => $member['id'],
         'userid' => $member['userid'],
-        'status' => $member['status']
+        'status' => $member['status'],
       )
     );
   }
