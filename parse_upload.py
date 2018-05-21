@@ -13,7 +13,7 @@ import sys
 from validate_email import validate_email
 
 from common import xl_read_as_dict
-from constants import ATTR_MAP as attribute_map
+from constants import ATTR_MAP as attribute_map, DEFAULT_EMAIL
 
 # Reload sys to set encoding to utf-8. This is important or else the
 # database will be corrupted!
@@ -61,12 +61,12 @@ def gen_user_from_row(user_row):
 
         # Handle emails especially
         if opkkey == 'email':
-            user[opkkey] = extract_email(user_row.get(nifkey)) or "FOO"
+            user[opkkey] = extract_email(user_row.get(nifkey)) or DEFAULT_EMAIL
 
         # We are nice about missing phonenumbers. This is relevant for logging
         # into booking. Use NIF PersonId instead.
-        if opkkey == 'userid':
-            user[opkkey] = user_row.get(nifkey) or user_row[attribute_map['id']]
+        elif opkkey == 'userid':
+            user[opkkey] = user_row.get(nifkey) or str(user_row[attribute_map['id']])
 
         else:
             # We only want to assign key if there is a value for it.
@@ -91,21 +91,15 @@ def extract_email(email_data):
         with the less invasive check_mx=True
     """
 
-    result = ''
-
-    try:
-        for address in email_data.split(';'):
-            # If we find a valid email, just break the loop
-            # and use it
-            if validate_email(address):
-                result = address
-                break
-
-    # The email_data may be of NoneType,
-    except AttributeError:
+    if email_data is None:
         return None
 
-    return result
+
+    for address in email_data.split(';'):
+        # If we find a valid email, just break the loop
+        # and use it
+        if validate_email(address):
+            return address
 
 
 if __name__ == '__main__':

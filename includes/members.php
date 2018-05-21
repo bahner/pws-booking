@@ -5,6 +5,8 @@
 
       global $wpdb;
       global $COLUMNS;
+
+      $counter = 1;
       
       // Create a header row
       echo '<tr>';

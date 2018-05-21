@@ -3,6 +3,8 @@
 
 """Constants for mapping NIF data to OPK PWS Booking"""
 
+DEFAULT_EMAIL = 'MANGLER.EPOST@OPK.NO'
+
 ATTR_MAP = {
     'address1': 'Adresse',
     'email': 'E-post',
