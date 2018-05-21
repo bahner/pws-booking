@@ -1,5 +1,9 @@
 #!/usr/bin/python2.7
-attribute_map = {
+# coding: utf-8
+
+"""Constants for mapping NIF data to OPK PWS Booking"""
+
+ATTR_MAP = {
     'address1': 'Adresse',
     'email': 'E-post',
     'firstname': 'Fornavn',
@@ -8,11 +12,14 @@ attribute_map = {
     'postaladdress': 'Postadresse',
     'postalcode': 'Postnr',
     'userid': 'Tlf. mobil',
+    'id': 'Tlf. mobil',
 }
 
-default_values = {
-    'E-post': 'mangler.epost@opk.no',
-    'Adresse': 'Konglebakken 1'
-    'Postnr': '1111'
-    'Postadresse': 'BORTENFOR SOL OG MÅNE'
+DEFAULT_EMAIL = 'mangler.epost@opk.no'
+
+DEFAULTS = {
+    'E-post': DEFAULT_EMAIL,
+    'Adresse': 'Konglebakken 1',
+    'Postnr': '1111',
+    'Postadresse': 'BORTENFOR SOL OG MÅNE',
 }

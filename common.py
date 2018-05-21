@@ -20,21 +20,8 @@ def xl_read_as_dict(spreadsheet):
     rows = sheet.max_row
     cols = sheet.max_column
 
-    headers = dict((col, sheet.cell(row=1, column=col).value) for col in range(1, cols))
-
     def item(row, col):
         """Describe item key for column, ie. header."""
         return (sheet.cell(row=1, column=col).value, sheet.cell(row=row, column=col).value)
 
     return (dict(item(row, col) for col in range(1, cols + 1)) for row in range(2, rows + 1))
-
-member_attributes_translations = {
-    'userid': 'Tlf. mobil',
-    'phonemobile': 'Tlf. mobil',
-    'email': 'E-post',
-    'firstname': 'Fornavn',
-    'lastname': 'Etternavn',
-    'address1': 'Adresse',
-    'postalcode': 'Postnr',
-    'postaladdress': 'Postadresse',
-}
