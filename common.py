@@ -27,3 +27,14 @@ def xl_read_as_dict(spreadsheet):
         return (sheet.cell(row=1, column=col).value, sheet.cell(row=row, column=col).value)
 
     return (dict(item(row, col) for col in range(1, cols + 1)) for row in range(2, rows + 1))
+
+member_attributes_translations = {
+    'userid': 'Tlf. mobil',
+    'phonemobile': 'Tlf. mobil',
+    'email': 'E-post',
+    'firstname': 'Fornavn',
+    'lastname': 'Etternavn',
+    'address1': 'Adresse',
+    'postalcode': 'Postnr',
+    'postaladdress': 'Postadresse',
+}

@@ -17,6 +17,22 @@ FILE = sys.argv[1]
 
 DAT = xl_read_as_dict(FILE)
 
+# How to translate the headers in the Excel sheet.
+# This is likely to change ....
+
+# NB! Match this against $COLUMNS in pws-booking.
+# _status_ amnd _fullname_ are special cases!
+MAT = {
+#    'address1': 'Adresse',
+    'email': 'E-post',
+    'firstname': 'Fornavn',
+    'lastname': 'Etternavn',
+    'phonemobile': 'Tlf. mobil',
+#    'postaladdress': 'Postadresse',
+#    'postalcode': 'Postnr',
+    'userid': 'Tlf. mobil',
+}
+
 for row in DAT:
     """Map nif-attributes to PWS booking attributes
     
@@ -38,8 +54,9 @@ for row in DAT:
     # Generate fullname
     user['fullname'] = u"{} {}".format(row.get('Fornavn'), row.get('Etternavn'))
 
-    # We don't need that many fields for now.
-    user['userid'] = row['Tlf. mobil']
+    # Read attributes we are likely to need.
+    for key, value in MAT.items():
+        user[key] = row.get(value, "N/A")
 
     # Append user to list of users
     MEM.append(user)
@@ -49,4 +66,4 @@ for row in DAT:
 # NEVER NEVER NEVER EVER use latin1 or other encodings!!!!
 # No win1251, no latin15, no ISO-8859-1 or ISO-8859-15. 
 # UTF8!
-print json.dumps(MEM, ensure_ascii=False, encoding='utf8')
+#print json.dumps(MEM, ensure_ascii=False, encoding='utf8')
