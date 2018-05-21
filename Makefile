@@ -1,7 +1,9 @@
 #!/usr/bin/make -f
 
-release:
-	cd .. && zip pws-booking.zip pws-booking
+DIRNAME=$(shell basename `pwd`)
+
+release: clean
+	cd .. && zip -r pws-booking.zip $(DIRNAME)/*
 	mv ../pws-booking.zip .
 
 clean:
