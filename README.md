@@ -41,13 +41,9 @@ NB! Later of version of python may be used, but is not available in an usable fa
 
 Schema changes
 ---
+`id` is PersonId from NIf. This requires the current `AUTO INCREMENT` setting for id to be removed. The other id, `userid` is set to `phonemobile` with a fallback to `id`.  This requires te current `userid`-limit to be raised from 8 to 16. Ref. https://en.wikipedia.org/wiki/Telephone_numbering_plan
 
-Vi setter `id` til "være PersonId fra NIf: Derfor må id kollonen endres, slik at vi ikke har
-`AUTO INCREMENT` på den. userid må utvides fra nuværende 8 tegn til 16 (egentig 15, men det
-er greit å ha et tegn å gå på).
-Ref. https://en.wikipedia.org/wiki/Telephone_numbering_plan
-
-Oppdateringen består i følgende kode:
+Update the tables as follows:
 
 ```sql
 ALTER TABLE `opk`.`opk_booking_user`
@@ -58,14 +54,5 @@ ALTER TABLE `opk`.`opk_booking_user_import`
 CHANGE COLUMN `id` `id` MEDIUMINT(8) UNSIGNED NOT NULL ,
 CHANGE COLUMN `userid` `userid` VARCHAR(16) NOT NULL DEFAULT '' ;
 ```
-
-Build module
----
-To pack type:
-```
-make
-```
-Then upload `pws_booking.zip` to Wordpress as a plugin. Make sure `openpyxl`
-is installed as descrived above. This has been done at domeneshop already.
 
 2018-05-21: bahner
