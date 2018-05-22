@@ -84,11 +84,7 @@ def extract_email(email_data):
 
         So we parse the list and extract the first valid email.
 
-        This requires net access as this actually checks that this
-        email address can be delivered.
-
-        If this entails to many errors, verify=True can be replaced
-        with the less invasive check_mx=True
+        check_mx=True is *way* to expensive to be of use.
     """
 
     if email_data is None:
@@ -98,7 +94,7 @@ def extract_email(email_data):
     for address in email_data.split(';'):
         # If we find a valid email, just break the loop
         # and use it
-        if validate_email(address):
+        if validate_email(address, check_mx=False):
             return address
 
 
