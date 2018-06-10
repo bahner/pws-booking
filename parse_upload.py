@@ -90,10 +90,13 @@ def gen_userid(string):
         This should be what most people expect.
     """
 
-    # Substitute non-integers with '' in string.
-    ints = re.sub("^[0-9]", '', string)
-
-    return ints[-8]
+    try:
+        # Substitute non-integers with '' in string.
+        ints = re.sub('\D', '', string)
+    except TypeError:
+        return None
+    else:
+        return ints[-8:]
 
 def extract_email(email_data):
     """Sanitize email data
