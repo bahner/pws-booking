@@ -9,6 +9,7 @@
 """
 import json
 import sys
+import re
 
 from validate_email import validate_email
 
@@ -66,7 +67,8 @@ def gen_user_from_row(user_row):
         # We are nice about missing phonenumbers. This is relevant for logging
         # into booking. Use NIF PersonId instead.
         elif opkkey == 'userid':
-            user[opkkey] = user_row.get(nifkey) or str(user_row[attribute_map['id']])
+            user[opkkey] = (gen_userid(user_row.get(nifkey))
+                            or str(user_row[attribute_map['id']]))
 
         else:
             # We only want to assign key if there is a value for it.
@@ -75,6 +77,23 @@ def gen_user_from_row(user_row):
 
     return user
 
+
+def gen_userid(string):
+    """Normalize phonenumer to 8 integers
+
+        Numbers are stripped of white space and
+        special chars and then the rightmost 8
+        integers are use as the phoneumber, eg:
+
+        +47 92 88 44 92 => 92884492
+
+        This should be what most people expect.
+    """
+
+    # Substitute non-integers with '' in string.
+    ints = re.sub("^[0-9]", '', string)
+
+    return ints[-8]
 
 def extract_email(email_data):
     """Sanitize email data
@@ -97,6 +116,7 @@ def extract_email(email_data):
         if validate_email(address, check_mx=False):
             return address
 
+    return None
 
 if __name__ == '__main__':
 

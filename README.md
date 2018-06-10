@@ -48,11 +48,11 @@ Update the tables as follows:
 ```sql
 ALTER TABLE `opk`.`opk_booking_user`
 CHANGE COLUMN `id` `id` MEDIUMINT(8) UNSIGNED NOT NULL ,
-CHANGE COLUMN `userid` `userid` VARCHAR(16) NOT NULL DEFAULT '' ;
+CHANGE COLUMN `userid` `userid` CHAR(8) NOT NULL DEFAULT '' ;
 
 ALTER TABLE `opk`.`opk_booking_user_import`
 CHANGE COLUMN `id` `id` MEDIUMINT(8) UNSIGNED NOT NULL ,
-CHANGE COLUMN `userid` `userid` VARCHAR(16) NOT NULL DEFAULT '' ;
+CHANGE COLUMN `userid` `userid` CHAR(8) NOT NULL DEFAULT '' ;
 ```
 
 2018-05-21: bahner
