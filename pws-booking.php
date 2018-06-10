@@ -8,7 +8,7 @@
   Author: Lars Bahner
   License URI: https://www.gnu.org/licenses/gpl-3.0.txt
   License: GPL3
-  Version: 0.0.1
+  Version: 0.0.2
   */
   
   defined( 'ABSPATH' ) or die( 'Not properly invoked. Plugin now dies.' );
