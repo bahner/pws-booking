@@ -11,7 +11,7 @@
   Version: 0.0.4
   */
   
-  defined( 'ABSPATH' ) or die( 'Not properly invoked. Plugin now dies.' );
+  defined( 'ABSPATH' ) or die ( 'Not properly invoked. Plugin now dies.' );
   
   # Some constants and possible config
   $WP_PLUGIN_DIR = plugin_dir_path( __FILE__ );
@@ -57,6 +57,10 @@
       
         echo "DATABASE IKKE OPPDATERT. PUSSIG FÅ MEDLEMMER!";
       }
+
+      // Delete file after processing.
+      pws_booking_delete_uploaded_file();
+
     }
   
     include 'includes/upload.php';
@@ -99,30 +103,56 @@
     if(isset($_FILES['pws_booking_medlemsliste'])){
   
       /*
-        Get the upload data into an associative aray (dict). The
+        Get the upload data into an associative array (dict). The
         'test_form' => False is required to avoid wordpress trying
         to do some form of parsing / validating, which isn't really
-        useful  anyways.
+        useful anyways.
         It's important, so leave it for now!
       */
   
-      $uploaded=wp_handle_upload($_FILES['pws_booking_medlemsliste'], array('test_form' => FALSE));
+      $uploaded = wp_handle_upload($_FILES['pws_booking_medlemsliste'], array('test_form' => FALSE));
   
       // Error checking using WP functions
       if(is_wp_error($uploaded)){
+
         echo "Feil ved opplasting: " . $uploaded->get_error_message();
-      }else{
+
+      } else {
   
         $membersheet = $uploaded['file'];
         $parser = $WP_PLUGIN_DIR . 'parse_upload.py';
   
         $json = exec("/usr/bin/python2.7 $parser $membersheet");
-  
-        return json_decode($json, true); // Return a list of asoociative arrays of users.
+
+        return json_decode($json, true); // Return a list of associative arrays of users.
   
       }
     }
   }
+
+  function pws_booking_delete_uploaded_file() {
+  
+    // Just delete the medlemslist
+    global $WP_PLUGIN_DIR;
+  
+    // First check if the file appears on the _FILES array
+    // The key_value is defined in the the post form.
+    if(isset($_FILES['pws_booking_medlemsliste'])){
+  
+      /*
+        Get the upload data into an associative array (dict). The
+        'test_form' => False is required to avoid wordpress trying
+        to do some form of parsing / validating, which isn't really
+        useful anyways.
+        It's important, so leave it for now!
+      */
+  
+      $uploaded = wp_handle_upload($_FILES['pws_booking_medlemsliste'], array('test_form' => FALSE));
+  
+      unlink ( $uploaded['file'] );
+
+  }
+
   
   function pws_booking_deactivate_all_users() {
   
