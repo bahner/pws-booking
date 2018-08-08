@@ -131,7 +131,11 @@ if __name__ == '__main__':
     for row in DATA:
         # Append user to list of users
         _ = gen_user_from_row(row)
-        if _ is not None:
+        try:
+            int(_['userid'])
+        except ValueError:
+            continue
+        else:
             MEMBERS.append(_)
 
     # Return JSON-serialized list of dict to be consumed by
