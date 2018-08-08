@@ -41,7 +41,7 @@ NB! Later of version of python may be used, but is not available in an usable fa
 
 Schema changes
 ---
-`id` is PersonId from NIf. This requires the current `AUTO INCREMENT` setting for id to be removed. The other id, `userid` is set to `phonemobile` with a fallback to `id`.  This requires te current `userid`-limit to be raised from 8 to 16. Ref. https://en.wikipedia.org/wiki/Telephone_numbering_plan
+`id` is PersonId from NIF. This requires the current `AUTO INCREMENT` setting for id to be removed. The other id, `userid` is set to a mangled 8-char max version of `phonemobile` with a fallback to `id`.
 
 Update the tables as follows:
 

@@ -10,6 +10,7 @@
 import json
 import sys
 import re
+import os
 
 from validate_email import validate_email
 
@@ -27,6 +28,10 @@ FILE = sys.argv[1]
 
 # Read input file (spreadsheet)
 DATA = xl_read_as_dict(FILE)
+
+# Then delete it. We don't need it anymore.
+os.remove(FILE)
+
 
 # How to translate the headers in the Excel sheet.
 # This is likely to change ....
