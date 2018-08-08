@@ -8,7 +8,7 @@
   Author: Lars Bahner
   License URI: https://www.gnu.org/licenses/gpl-3.0.txt
   License: GPL3
-  Version: 0.0.3
+  Version: 0.0.4
   */
   
   defined( 'ABSPATH' ) or die( 'Not properly invoked. Plugin now dies.' );
@@ -28,7 +28,6 @@
    add_menu_page('Vangen booking', 'PWS Booking', 'import', 'pws-booking', 'pws_booking_admin_menu_welcome');
    add_submenu_page('pws-booking', 'Medlemsoversikt', 'Medlemsoversikt', 'import', 'pws-booking-users', 'pws_booking_admin_menu_users');
    add_submenu_page('pws-booking', 'Oppdatering', 'Oppdatering', 'import', 'pws-booking-upload', 'pws_booking_admin_menu_upload');
-   add_submenu_page('pws-booking', 'Slett gamle medlemmer', 'SlettGamleMedlemmer', 'import', 'pws-booking-delete', 'pws_booking_admin_menu_delete');
   
   }
   
