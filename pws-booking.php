@@ -8,7 +8,7 @@
   Author: Lars Bahner
   License URI: https://www.gnu.org/licenses/gpl-3.0.txt
   License: GPL3
-  Version: 0.0.2
+  Version: 0.0.3
   */
   
   defined( 'ABSPATH' ) or die( 'Not properly invoked. Plugin now dies.' );
@@ -28,6 +28,7 @@
    add_menu_page('Vangen booking', 'PWS Booking', 'import', 'pws-booking', 'pws_booking_admin_menu_welcome');
    add_submenu_page('pws-booking', 'Medlemsoversikt', 'Medlemsoversikt', 'import', 'pws-booking-users', 'pws_booking_admin_menu_users');
    add_submenu_page('pws-booking', 'Oppdatering', 'Oppdatering', 'import', 'pws-booking-upload', 'pws_booking_admin_menu_upload');
+   add_submenu_page('pws-booking', 'Slett gamle medlemmer', 'SlettGamleMedlemmer', 'import', 'pws-booking-delete', 'pws_booking_admin_menu_delete');
   
   }
   
@@ -43,6 +44,13 @@
   
         pws_booking_deactivate_all_users();
         $failed_updates = pws_booking_upsert_users($members);
+        
+        # Delete old members if there are no failed updates.
+        if (empty($failed_updates)) {
+        
+          pws_booking_delete_inactive_users();
+        
+        }
   
         include 'includes/summary.php';
   
@@ -135,6 +143,27 @@
   
     $wpdb->query('UPDATE opk_booking_user SET status = "inactive"');
     $wpdb->query('UPDATE opk_booking_user_import SET status = "inactive"');
+  
+  }
+
+  function pws_booking_delete_inactive_users() {
+  
+    /*
+      This function simply sets the status of all users to inactive.
+      This causes a small race condition, as no one can log in while
+      the booking users are being updated.
+      This seems like a risk that's acceptable seeing how much complexity
+      such a simple solution renders redundant.
+  
+      This plugin then reads in all the active users and updates their
+      status as required. No one is deleted, so old bookings will still
+      exist - unless you have changed your telephone number .....
+    */
+  
+    global $wpdb;
+  
+    $wpdb->query('DELETE FROM opk_booking_user WHERE status = "inactive"');
+    $wpdb->query('DELETE FROM opk_booking_user_import WHERE status = "inactive"');
   
   }
   
