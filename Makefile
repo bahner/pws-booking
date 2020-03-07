@@ -1,22 +1,16 @@
 #!/usr/bin/make -f
 
-PLUGIN_NAME ?= pws-booking
+release: clean pws-booking.zip
 
-# We want to run clean first. To delete cache-files
-# and old builds.
-pws-booking.zip: clean
-	mkdir $(PLUGIN_NAME)
-	cp -a\
-		*php\
-		*py\
-		includes\
-		GraphQL\
-		config\
-		README.md\
-		$(PLUGIN_NAME)
-	zip -r $(PLUGIN_NAME).zip $(PLUGIN_NAME)/
+pws-booking.zip:
+	zip -r pws-booking.zip pws-booking/
 
 clean:
 	find -name "*pyc" -type f -delete
-	rm -rf $(PLUGIN_NAME)
-	rm -f $(PLUGIN_NAME).zip
+	rm -f pws-booking.zip
+
+up:
+	cd .docker && docker-compose up -d
+
+down:
+	cd .docker && docker-compose down

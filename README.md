@@ -20,6 +20,16 @@ make
 
 Then install the produced `pws-booking.zip` in Wordpress. That's it. No configuration is required.
 
+Development requirements
+---
+You probably want docker and docker-compose installed.
+Then you can pull up a dockerized version of wordpress 
+with the command:
+```bash
+make up
+```
+And similarly ```make down``` to take it down again
+
 Build requirements
 ---
 The build process normally requires make and unzip. YMMV! This is normally installed as:
