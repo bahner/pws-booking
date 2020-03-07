@@ -8,7 +8,7 @@
   Author: Lars Bahner
   License URI: https://www.gnu.org/licenses/gpl-3.0.txt
   License: GPL3
-  Version: 0.1.0
+  Version: 0.1.1
   */
   
   defined( 'ABSPATH' ) or die ( 'Not properly invoked. Plugin now dies.' );
@@ -16,7 +16,10 @@
   # Some constants and possible config
   $WP_PLUGIN_DIR = plugin_dir_path( __FILE__ );
   require 'includes/constants.php';
-  
+ 
+  # Initialize graphql entitities
+  require 'GraphQL/init.php';
+
   
   function pws_booking_admin_menu() {
   
