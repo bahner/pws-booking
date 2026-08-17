@@ -1,0 +1,15 @@
+{
+    "name": "bahner/pws-booking",
+    "description": "WordPress plugin for updating OPK's booking member database from a Klubbadmin export.",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "php": ">=8.0",
+        "phpoffice/phpspreadsheet": ">=1.29 <2.2",
+        "egulias/email-validator": "^3.0 || ^4.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

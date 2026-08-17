@@ -1,30 +1,27 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
 <h2>Medlemsoversikt</h2>
 <hr>
 <table>
     <?php
 
-      global $wpdb;
-      global $COLUMNS;
+      $repository = pws_booking_repository();
+      $columns    = PWS_BOOKING_COLUMNS;
 
-      $counter = 1;
-      
-      // Create a header row
+      // Create a header row.
       echo '<tr>';
-        foreach ($COLUMNS as $key) { 
-          echo '<th>', $key , '</th>';
-        }
+      foreach ( $columns as $key ) {
+        echo '<th>' . esc_html( $key ) . '</th>';
+      }
       echo '</tr>';
 
-      // Generate a query to fetch COLUMNS from database.
-      $columnlist = implode(', ', $COLUMNS);
-      $members = $wpdb->get_results('SELECT ' . $columnlist . ' FROM opk_booking_user_import;', ARRAY_A); 
+      $members = $repository->get_all( $columns );
 
-      // Genrate a row per member
-      foreach ($members as $member) {
+      // Generate a row per member.
+      foreach ( $members as $member ) {
         echo '<tr>';
-          foreach ($COLUMNS as $key) { 
-            echo '<td>', $member[$key] , '</td>';
-          }
+        foreach ( $columns as $key ) {
+          echo '<td>' . esc_html( $member[ $key ] ?? '' ) . '</td>';
+        }
         echo '</tr>';
       }
     ?>

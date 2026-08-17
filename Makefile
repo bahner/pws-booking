@@ -1,12 +1,17 @@
 #!/usr/bin/make -f
 
-release: clean pws-booking.zip
+.PHONY: release vendor clean up down
+
+release: clean vendor pws-booking.zip
+
+vendor:
+	cd pws-booking && composer install --no-dev --optimize-autoloader
 
 pws-booking.zip:
-	zip -r pws-booking.zip pws-booking/
+	zip -r pws-booking.zip pws-booking/ -x 'pws-booking/.docker/*'
 
 clean:
-	find -name "*pyc" -type f -delete
+	rm -rf pws-booking/vendor
 	rm -f pws-booking.zip
 
 up:

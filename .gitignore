@@ -2,3 +2,5 @@
 *.csv
 .~lock.*
 pws-booking.zip
+pws-booking/vendor/
+.vscode/
