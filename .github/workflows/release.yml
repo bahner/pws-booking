@@ -1,0 +1,55 @@
+name: Check and release plugin
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "v*"
+
+jobs:
+  check:
+    name: Check plugin build
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out pushed commit
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, zip
+          tools: composer
+
+      - name: Build plugin ZIP
+        run: make release
+
+  release:
+    name: Build and publish plugin release
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, zip
+          tools: composer
+
+      - name: Build plugin ZIP
+        run: make release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: pws-booking.zip
+          generate_release_notes: true
