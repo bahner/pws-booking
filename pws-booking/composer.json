@@ -4,12 +4,15 @@
     "type": "wordpress-plugin",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "phpoffice/phpspreadsheet": "^2.4",
         "egulias/email-validator": "^3.0 || ^4.0"
     },
     "config": {
         "optimize-autoloader": true,
+        "platform": {
+            "php": "8.2.33"
+        },
         "sort-packages": true
     }
 }

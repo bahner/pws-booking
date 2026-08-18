@@ -6,6 +6,7 @@ release: clean vendor pws-booking.zip
 
 vendor:
 	cd pws-booking && composer install --no-dev --optimize-autoloader
+	cd pws-booking && composer check-platform-reqs --no-dev
 
 pws-booking.zip:
 	zip -r pws-booking.zip pws-booking/ -x 'pws-booking/.docker/*'

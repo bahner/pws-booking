@@ -6,7 +6,7 @@ A wordpress plugin for updating members in OPKs member database for booking at V
 Requires:
 
   * Wordpress
-  * PHP 8.0+
+  * PHP 8.2+
   * Composer (build-time only, not required at runtime)
 
 TL;DR!

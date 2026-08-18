@@ -8,7 +8,7 @@
  * License:     GPL3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
  * Version:     2.0.0
- * Requires PHP: 8.0
+ * Requires PHP: 8.2
  *
  * @package PWS_Booking
  */
