@@ -46,10 +46,12 @@ jobs:
           tools: composer
 
       - name: Build plugin ZIP
-        run: make release
+        run: |
+          make release
+          mv pws-booking.zip "pws-booking-${GITHUB_REF_NAME#v}.zip"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: pws-booking.zip
+          files: pws-booking-*.zip
           generate_release_notes: true

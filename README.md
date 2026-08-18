@@ -44,8 +44,8 @@ Running `make release` will:
 3. Zip up the plugin, including `vendor/`, into `pws-booking.zip`.
 
 Pushing a tag starting with `v` (for example `v1.0.0`) runs the same build in
-GitHub Actions and publishes `pws-booking.zip` as a GitHub Release asset ready
-to upload to WordPress.
+GitHub Actions and publishes `pws-booking-1.0.0.zip` as a GitHub Release asset
+ready to upload to WordPress.
 
 Excel parsing
 ---
