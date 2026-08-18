@@ -47,8 +47,11 @@ jobs:
 
       - name: Build plugin ZIP
         run: |
+          version="${GITHUB_REF_NAME#v}"
+          sed -i "s/^ \* Version:.*$/ * Version:     ${version}/" pws-booking/pws-booking.php
           make release
-          mv pws-booking.zip "pws-booking-${GITHUB_REF_NAME#v}.zip"
+          unzip -p pws-booking.zip pws-booking/pws-booking.php | grep -Fq " * Version:     ${version}"
+          mv pws-booking.zip "pws-booking-${version}.zip"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

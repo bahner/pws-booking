@@ -7,7 +7,7 @@
  * Author URI:  http://flightlog.org/fl.html?l=1&a=28&user_id=7288
  * License:     GPL3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
- * Version:     2.0.0
+ * Version:     0.2.3
  * Requires PHP: 8.2
  *
  * @package PWS_Booking
